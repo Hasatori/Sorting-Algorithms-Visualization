@@ -1,4 +1,3 @@
-import {NgZone} from '@angular/core';
 import {Direction} from './direction';
 
 export class Square {

@@ -3,14 +3,6 @@ import {Square} from './sorting-algorithms/square';
 import {Swap} from './animation/swap';
 import {SortingAlgorithm} from './sorting-algorithms/sorting-algorithm';
 import {SortingAlgorithmsFactory} from './sorting-algorithms/sorting-algorithms-factory';
-import {
-  BUBBLE_SORT,
-  BUBBLE_SORT_DESC,
-  INSERTION_SORT,
-  INSERTION_SORT_DESC,
-  SELECTION_SORT,
-  SELECTION_SORT_DESC
-} from './sorting-algorithms/sorting-algorithm-names';
 import {Observable} from 'rxjs';
 import {Action} from './action';
 
@@ -24,7 +16,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   @Input() numbers: Observable<Array<number>>;
   @Input() action: Observable<Action>;
   @Input() sortingAlgorithmName: string;
-  @Output() delete: EventEmitter<any> = new EventEmitter();
   @Output() done: EventEmitter<number> = new EventEmitter();
   @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('logBody', {static: true}) logBody: ElementRef<HTMLDivElement>;
