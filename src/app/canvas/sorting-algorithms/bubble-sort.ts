@@ -1,10 +1,8 @@
 import {SortingAlgorithm} from './sorting-algorithm';
-import {Square} from '../square';
-import {Step} from '../step';
+import {Square} from './square';
+import {Step} from './step';
 import {Swap} from '../animation/swap';
-import {Observable} from 'rxjs';
 import {LogStep} from './log-step';
-import {Action} from '../../action';
 
 export class BubbleSort implements SortingAlgorithm {
 
@@ -14,6 +12,8 @@ export class BubbleSort implements SortingAlgorithm {
   index = 0;
   iterationRestared = false;
   steps: LogStep[] = [];
+  description: string = 'Bubble Sort is the simplest sorting algorithm that works by repeatedly' +
+    ' swapping the adjacent elements if they are in wrong order.';
 
   constructor(squares: Array<Square>) {
     this.steps.push(LogStep.create('Inialazing', 'Input [' + squares.map(square => square.numberValue).join(',') + ']'));

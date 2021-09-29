@@ -7,7 +7,7 @@ export class Square {
   private backgroundColor = '#75BEEE';
   x;
   y;
-  private z = 50;
+  private z = 30 ;
   numberValue: number;
 
   constructor(private ctx: CanvasRenderingContext2D, numberValue: number, x: number, y: number) {

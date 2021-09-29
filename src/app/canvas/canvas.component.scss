@@ -2,6 +2,47 @@
 
 .canvas {
   border: 1px solid black;
+ width: 250px !important;
+height: 100%;
+  margin: auto;
+}
+.description-wrapper{
+  width: 250px !important;
+  margin: auto;
+  height: 120px;
+}
+
+@media only screen and (min-width: 350px) {
+  .canvas {
+    width: 320px !important;
+  }
+  .description-wrapper{
+    width: 320px !important;
+  }
+
+}
+
+@media only screen and (min-width: 450px) {
+  .canvas {
+    width: 400px !important;
+  }
+  .description-wrapper{
+    width: 400px !important;
+  }
+
+}
+@media only screen and (min-width: 550px) {
+  .canvas {
+    width: 450px !important;
+  }
+  .description-wrapper{
+    width: 450px !important;
+  }
+
+}
+
+.description{
+  text-align: justify;
 }
 
 .delete-canvas {
@@ -19,9 +60,8 @@
 .execution-time {
   position: absolute;
   right: 1%;
-  bottom: 17%;
+  bottom: 0%;
   color: #4285F4;
-
 }
 
 .log {
@@ -58,7 +98,15 @@
 
 .desc {
   text-align: left;
-  max-width: 10vw;
+
 }
 
+.sorting-done {
+  text-align: left;
+  font-size: 1.8rem;
+  position: absolute;
+  right: 5%;
+  top: 2%;
+
+}
 

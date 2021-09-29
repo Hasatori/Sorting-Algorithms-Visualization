@@ -1,5 +1,5 @@
-import {Square} from '../square';
-import {Direction} from '../direction';
+import {Square} from '../sorting-algorithms/square';
+import {Direction} from '../sorting-algorithms/direction';
 
 export class Swap {
   private second: Square;

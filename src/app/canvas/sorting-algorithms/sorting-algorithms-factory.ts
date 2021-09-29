@@ -1,7 +1,7 @@
 import {SortingAlgorithm} from './sorting-algorithm';
 
 
-import {Square} from '../square';
+import {Square} from './square';
 import {SelectionSort} from './selection-sort';
 import {BUBBLE_SORT, INSERTION_SORT, SELECTION_SORT} from './sorting-algorithm-names';
 import {BubbleSort} from './bubble-sort';

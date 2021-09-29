@@ -1,9 +1,7 @@
 import {SortingAlgorithm} from './sorting-algorithm';
-import {Square} from '../square';
-import {Step} from '../step';
+import {Square} from './square';
+import {Step} from './step';
 import {MoveToPosition} from '../animation/move-to-position';
-import {Swap} from '../animation/swap';
-import {Observable} from 'rxjs';
 import {LogStep} from './log-step';
 
 export class InsertionSort implements SortingAlgorithm {
@@ -12,6 +10,8 @@ export class InsertionSort implements SortingAlgorithm {
   private index = 1;
   private squares: Array<Square>;
   steps: LogStep[] = [];
+  description: string = 'Insertion iterates over array. Each time it finds smaller element it' +
+    ' puts it in to the right place in the array.';
 
   constructor(squares: Array<Square>) {
     this.steps.push(LogStep.create('Inialazing', 'Input [' + squares.map(square => square.numberValue).join(',') + ']'));

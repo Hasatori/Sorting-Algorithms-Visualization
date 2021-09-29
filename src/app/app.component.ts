@@ -1,10 +1,9 @@
-import {Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {animate} from '@angular/animations';
-import {Square} from './canvas/square';
-import {Observable, of, Subscriber} from 'rxjs';
-import {Action} from './action';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Action} from './canvas/action';
 import {isUndefined} from 'util';
-import {nullSafeIsEquivalent} from '@angular/compiler/src/output/output_ast';
+import {BUBBLE_SORT, INSERTION_SORT, SELECTION_SORT} from './canvas/sorting-algorithms/sorting-algorithm-names';
+import {SortingAlgorithmsFactory} from './canvas/sorting-algorithms/sorting-algorithms-factory';
 
 
 @Component({
@@ -13,9 +12,6 @@ import {nullSafeIsEquivalent} from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild('numberOfObjectsToSort', {static: true}) numberOfObjectsToSort: ElementRef<HTMLSelectElement>;
-  @ViewChild('canvasSizeSelect', {static: true}) canvasSizeSelect: ElementRef<HTMLSelectElement>;
-  @ViewChild('animationSpeedSelect', {static: true}) animationSpeedComponent: ElementRef<HTMLSelectElement>;
 
   canvases: Array<Canvas> = [];
   data: Observable<Array<number>>;
@@ -23,13 +19,13 @@ export class AppComponent implements OnInit {
   actionSubscribers = [];
   action: Observable<Action>;
   numbers = [];
-  canvasSize: number;
-  animationSpeed: Observable<number>;
   animationSpeedSubscribers = [];
-
   sortingStarted = false;
   sortingPaused = false;
   doneCanvases: Array<Canvas> = [];
+  sortingAlgorithmsFactory = new SortingAlgorithmsFactory();
+  sortingAlgorithmsNames: Array<string> = [BUBBLE_SORT, INSERTION_SORT, SELECTION_SORT];
+  allDone = false;
 
   constructor() {
     this.data = new Observable((subscriber => {
@@ -42,15 +38,6 @@ export class AppComponent implements OnInit {
     this.action = new Observable((subscriber => {
       this.actionSubscribers.push(subscriber);
     }));
-    this.animationSpeed = new Observable(subscriber => {
-      this.animationSpeedSubscribers.push(subscriber);
-      subscriber.next(Number(this.animationSpeedComponent.nativeElement.value));
-    });
-
-  }
-
-  addCanvas() {
-    this.canvases.push(new Canvas());
   }
 
   startSorting() {
@@ -81,6 +68,7 @@ export class AppComponent implements OnInit {
     this.actionSubscribers.forEach(subscriber => {
       subscriber.next(Action.STOP);
     });
+    this.generateData('10');
   }
 
   continueSorting() {
@@ -88,6 +76,17 @@ export class AppComponent implements OnInit {
     this.actionSubscribers.forEach(subscriber => {
       subscriber.next(Action.CONTINUE);
     });
+  }
+
+  restartSorting() {
+    this.allDone = false;
+    this.canvases = [];
+    this.sortingAlgorithmsNames.forEach((sortingAlgorithmsName) => {
+      const canvas = new Canvas();
+      canvas.sortingAlgorithmName = sortingAlgorithmsName;
+      this.canvases.push(canvas);
+    });
+    this.generateData('10');
   }
 
   generateData(count: string) {
@@ -102,29 +101,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setCanvasSize();
-  }
-
-  setCanvasSize() {
-    this.canvasSize = Number(this.canvasSizeSelect.nativeElement.value);
-  }
-
-  setAnimationSpeed() {
-    this.animationSpeedSubscribers.forEach(subscriber => {
-      subscriber.next(Number(this.animationSpeedComponent.nativeElement.value));
-    });
-  }
-
-  deleteCanvas(canvas: Canvas) {
-    this.canvases = this.canvases.filter(candidate => candidate !== canvas);
+    this.restartSorting();
   }
 
   done(canvas: Canvas, executionTime: number) {
     canvas.done = true;
     canvas.executionTime = executionTime;
     const lastDoneCanvas = this.doneCanvases[this.doneCanvases.length - 1];
-    console.log(lastDoneCanvas);
-    console.log(canvas);
     if (isUndefined(lastDoneCanvas)) {
       canvas.place = 1;
     } else if (canvas.executionTime === lastDoneCanvas.executionTime) {
@@ -137,6 +120,7 @@ export class AppComponent implements OnInit {
       this.sortingStarted = false;
       this.sortingPaused = false;
       this.numbers = [];
+      this.allDone = true;
     }
   }
 }
@@ -145,4 +129,5 @@ export class Canvas {
   done = false;
   executionTime = -1;
   place = -1;
+  sortingAlgorithmName: string;
 }

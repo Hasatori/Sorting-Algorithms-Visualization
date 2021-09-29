@@ -1,25 +1,23 @@
-import {Square} from '../square';
-import {Step} from '../step';
+import {Square} from './square';
+import {Step} from './step';
 import {Swap} from '../animation/swap';
 import {SortingAlgorithm} from './sorting-algorithm';
-import {Observable} from 'rxjs';
-import {LogStep} from './log-step';
 
 export class SelectionSort implements SortingAlgorithm {
   step: Step;
   searchSection: Array<Square>;
   done = false;
-  steps: LogStep[] = [];
+  description: string = 'The selection sort algorithm sorts an array by repeatedly finding ' +
+    'the minimum element (considering ascending order) from unsorted part and putting it at the beginning. ' +
+    'The algorithm maintains two subarrays in a given array.';
 
   constructor(squares: Array<Square>) {
-    this.steps.push(LogStep.create('Inialazing', 'Input [' + squares.map(square => square.numberValue).join(',') + ']'));
     this.searchSection = Array.from(squares);
     this.step = this.createNextStep();
   }
 
   animate() {
     if (this.searchSection.length === 0) {
-      console.log('done');
       this.done = true;
     }
     if (this.step.done) {
@@ -44,7 +42,6 @@ export class SelectionSort implements SortingAlgorithm {
     this.searchSection[0] = toSwap;
     this.searchSection[swapIndex] = first;
     this.searchSection.shift();
-    this.steps.push(LogStep.create('Swap', 'Swapping element ' + first.numberValue + ' with element ' + toSwap.numberValue));
     this.step = {
       done: false,
       execute() {

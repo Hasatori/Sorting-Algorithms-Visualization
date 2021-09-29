@@ -1,99 +1,66 @@
-<div class="container-fluid m-auto pt-5">
-  <div class="d-flex flex-column">
-    <div><h1>Sorting algorithms visualization</h1>
+<div class="container m-auto pt-5">
+  <div class="d-flex flex-column justify-content-center">
+    <div class="text-center"><h1>Sorting algorithms visualization</h1>
     </div>
-    <div>
-      <button type="button" mdbBtn color="success" mdbWavesEffect (click)="startSorting()" *ngIf="!sortingStarted"
-              [disabled]="numbers.length===0">
-        Start
-      </button>
-      <button
-        *ngIf="sortingStarted && !sortingPaused"
-        type="button"
-        mdbBtn color="info"
-        mdbWavesEffect
-        (click)="pauseSorting()"
-      >Pause
 
+    <div class="mt-5 mx-auto">
+      <button *ngIf="!sortingPaused" type="button" mdbBtn color="success" mdbWavesEffect (click)="startSorting()"
+              [disabled]="numbers.length===0 || sortingStarted">
+        <mdb-icon fas icon="play"></mdb-icon>
       </button>
       <button
         *ngIf="sortingPaused"
         type="button"
         mdbBtn color="info" mdbWavesEffect
         (click)="continueSorting()"
-      >Continue
+      >
+        <mdb-icon fas icon="play"></mdb-icon>
       </button>
       <button
-        *ngIf="sortingStarted"
+
+        type="button"
+        mdbBtn color="info"
+        mdbWavesEffect
+        [disabled]="!sortingStarted || sortingPaused"
+        (click)="pauseSorting()"
+      >
+        <mdb-icon fas icon="pause"></mdb-icon>
+
+      </button>
+
+      <button
         type="button" mdbBtn color="danger"
         mdbWavesEffect
         (click)="stopSorting()"
-      >Stop
+        [disabled]="!sortingPaused"
+      >
+        <mdb-icon fas icon="stop"></mdb-icon>
       </button>
-    </div>
-    <div>
-      <button type="button" mdbBtn color="success" mdbWavesEffect (click)="addCanvas()" [disabled]="sortingStarted">
-        <mdb-icon fas icon="plus"></mdb-icon>
-        Add sorting algorithm
-      </button>
-    </div>
-    <div class="d-flex flex-row">
-      <div class="align-self-end">
-        <button type="button"
-                mdbBtn color="info"
-                mdbWavesEffect (click)="generateData(numberOfObjectsToSort.value)"
-                [disabled]="sortingStarted || this.canvases.length===0"
-        >Generate
-          data
-        </button>
-      </div>
-      <div class="align-self-end ml-1 d-flex flex-column">
-        <div class="btn-group" mdbDropdown>
-          <select [disabled]="sortingStarted || this.canvases.length===0"
-                  class="browser-default custom-select" #numberOfObjectsToSort>
-            <option selected value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="300">300</option>
-            <option value="1000">1000</option>
-          </select>
-        </div>
-      </div>
-      <div class="m-1">Canvas size<select #canvasSizeSelect (change)="setCanvasSize()"
-                                          [disabled]="sortingStarted || this.canvases.length===0"
-                                          class="browser-default custom-select">
-        <option value="4000">3000</option>
-        <option value="2000">2000</option>
-        <option selected value="1000">1000</option>
-        <option value="800">800</option>
-        <option value="600">600</option>
-      </select></div>
-      <div class="m-1">Animation speed<select #animationSpeedSelect (change)="setAnimationSpeed()"
-                                              [disabled]="sortingStarted || this.canvases.length===0"
-                                              class="browser-default custom-select">
-        <option value="1">1</option>
-        <option value="10">10</option>
-        <option selected value="20">20</option>
-        <option value="40">40</option>
-      </select></div>
-    </div>
 
-    <div *ngFor="let canvas of canvases" class="mt-5">
-      <div class="sorting-done ml-3 mt-1" *ngIf="canvas.done">Finished #{{canvas.place}} after {{canvas.executionTime}}
-        seconds
-        <mdb-icon class="text-success font-weight-bold" far icon="check-circle"></mdb-icon>
+    </div>
+    <div class="mt-5 mx-auto">
+      <button
+        *ngIf="allDone"
+        type="button"
+        mdbBtn color="info"
+        mdbWavesEffect
+        (click)="restartSorting()"
+      >Restart
+      </button>
+    </div>
+    <div class="container">
+      <div class="row ">
+        <div *ngFor="let canvas of canvases" class="col-lg-6 col-md-12 col-sm-12 mt-5">
+          <app-canvas
+            [numbers]="data"
+            [action]="action"
+            [sortingAlgorithmName]="canvas.sortingAlgorithmName"
+            (delete)="deleteCanvas(canvas)"
+            (done)="done(canvas,$event)"
+          ></app-canvas>
+        </div>
+
       </div>
-      <app-canvas
-        [numbers]="data"
-        [action]="action"
-        [canvasSize]="this.canvasSize"
-        [animationSpeed]="this.animationSpeed"
-        (delete)="deleteCanvas(canvas)"
-        (done)="done(canvas,$event)"
-      ></app-canvas>
     </div>
   </div>
 </div>
