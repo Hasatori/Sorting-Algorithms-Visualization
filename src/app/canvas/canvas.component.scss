@@ -105,10 +105,12 @@
 
 .sorting-done {
   text-align: left;
-  font-size: 1.8rem;
   position: absolute;
   right: 5%;
-  top: 2%;
+  top: 5%;
+}
 
+.execution-time, .sorting-done {
+  font-size: 1rem;
 }
 
