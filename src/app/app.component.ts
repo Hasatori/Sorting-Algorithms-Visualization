@@ -42,8 +42,6 @@ export class AppComponent implements OnInit {
 
   startSorting() {
     this.canvases.forEach(canvas => {
-      canvas.place = -1;
-      canvas.executionTime = -1;
       canvas.done = false;
     });
     this.doneCanvases = [];
@@ -104,17 +102,8 @@ export class AppComponent implements OnInit {
     this.restartSorting();
   }
 
-  done(canvas: Canvas, executionTime: number) {
+  done(canvas: Canvas) {
     canvas.done = true;
-    canvas.executionTime = executionTime;
-    const lastDoneCanvas = this.doneCanvases[this.doneCanvases.length - 1];
-    if (isUndefined(lastDoneCanvas)) {
-      canvas.place = 1;
-    } else if (canvas.executionTime === lastDoneCanvas.executionTime) {
-      canvas.place = lastDoneCanvas.place;
-    } else {
-      canvas.place = lastDoneCanvas.place + 1;
-    }
     this.doneCanvases.push(canvas);
     if (this.doneCanvases.length === this.canvases.length) {
       this.sortingStarted = false;
@@ -127,7 +116,5 @@ export class AppComponent implements OnInit {
 
 export class Canvas {
   done = false;
-  executionTime = -1;
-  place = -1;
   sortingAlgorithmName: string;
 }

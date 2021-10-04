@@ -16,7 +16,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
   @Input() numbers: Observable<Array<number>>;
   @Input() action: Observable<Action>;
   @Input() sortingAlgorithmName: string;
-  @Output() done: EventEmitter<number> = new EventEmitter();
+  @Output() done: EventEmitter<void> = new EventEmitter();
   @ViewChild('canvas', {static: true}) canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('logBody', {static: true}) logBody: ElementRef<HTMLDivElement>;
   @ViewChild('sortingAlgorithmSelect', {static: true}) sortingAlgorithmsSelect: ElementRef<HTMLSelectElement>;
@@ -30,8 +30,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   paused = false;
   sortingAlgorithmsFactory = new SortingAlgorithmsFactory();
   speed = 10;
-  executionCounter = 0;
-  executionTime: string = null;
   private scrollInterval;
 
   constructor(private ngZone: NgZone) {}
@@ -85,7 +83,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
         this.sortingAlgorithm.animate();
       } else {
         this.clearIntervalsAndCancelAnimation();
-        this.done.emit(this.executionCounter);
+        this.done.emit();
       }
 
     }
@@ -105,13 +103,9 @@ export class CanvasComponent implements OnInit, OnDestroy {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.squares = [];
     this.clearIntervalsAndCancelAnimation();
-    this.executionCounter = 0;
-    this.executionTime = null;
   }
 
   start() {
-    this.executionCounter = 0;
-    this.executionTime = 0 + ' seconds';
     this.interval = setInterval(() => {
       this.tick();
     }, this.speed);
@@ -122,8 +116,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
 
   setExecutionInterval() {
     this.executionInterval = setInterval(() => {
-      this.executionCounter = this.executionCounter + 1;
-      this.executionTime = this.executionCounter + ' seconds';
     }, 1000);
   }
 

@@ -3,7 +3,6 @@
   <div *ngIf="this.sortingAlgorithm!=null" class="description-wrapper mt-2 mb-2"><p class="description">{{sortingAlgorithm.description}}</p></div>
   <div class="position-relative m-auto">
     <canvas class="canvas shadow rounded" height="100" #canvas></canvas>
-    <div class="execution-time" *ngIf="executionTime!=null" ><strong>Execution time: {{executionTime}}</strong></div>
     <div class="sorting-done" *ngIf="this.sortingAlgorithm.done">
       Done
       <mdb-icon class="text-success font-weight-bold" far icon="check-circle"></mdb-icon>
